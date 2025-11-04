@@ -85,6 +85,7 @@ A simple and responsive **E-Commerce web application** built using **Django**, *
 
 📂 Project Structure
 
+```
 ecommerce/
 ├── customer_users/         # User authentication and home page
 ├── shop_products/          # Product models and logic
@@ -94,6 +95,7 @@ ecommerce/
 ├── db.sqlite3              # Database file
 ├── manage.py
 └── requirements.txt
+```
 
 🧠 How It Works
 
@@ -113,11 +115,11 @@ ecommerce/
 
 The Django Admin Dashboard provides powerful management tools:
 
-Add and manage Products
+>Add and manage Products
 
-Manage Users and Orders
+>Manage Users and Orders
 
-Edit Product details and Prices
+>Edit Product details and Prices
 
 Access via:
 👉 http://127.0.0.1:8000/admin/
