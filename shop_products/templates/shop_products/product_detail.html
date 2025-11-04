@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>E-Shop</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/cart/">Cart</a>
+        </nav>
+    </header>
+
+    <main class="product-detail">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <div>
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <h3>₹{{ product.price }}</h3>
+            <a href="/cart/add/{{ product.id }}/" class="btn">Add to Cart</a>
+        </div>
+    </main>
+</body>
+</html>

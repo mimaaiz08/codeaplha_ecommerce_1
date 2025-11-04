@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | E-Shop</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f8f8f8;
+      font-family: Arial, sans-serif;
+    }
+    nav {
+      background-color: #222;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav h2 { margin: 0; }
+    nav ul { list-style: none; display: flex; gap: 15px; }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .cart-container {
+      width: 90%;
+      max-width: 800px;
+      background: white;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; color: #222; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border-bottom: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    table img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+    .qty-btn {
+      text-decoration: none;
+      padding: 4px 8px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 4px;
+      margin: 0 4px;
+      cursor: pointer;
+    }
+    .qty-btn:hover { background-color: #555; }
+    .total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .actions {
+      text-align: right;
+      margin-top: 20px;
+    }
+    .actions a {
+      display: inline-block;
+      text-decoration: none;
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-left: 10px;
+    }
+    .actions a:hover { background: #0056b3; }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <h2>E-Shop</h2>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/cart/">Cart</a></li>
+      <li><a href="/users/logout/">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="cart-container" id="cart-container">
+    <h1>Your Cart 🛒</h1>
+
+    {% if items %}
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr data-id="{{ item.id }}" data-price="{{ item.product.price }}">
+          <td>
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            {{ item.product.name }}
+          </td>
+          <td>
+            <button class="qty-btn decrease">−</button>
+            <span class="quantity" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+            <button class="qty-btn increase">+</button>
+          </td>
+          <td>₹{{ item.product.price }}</td>
+          <td class="row-total">₹{{ item.product.price|floatformat:2|add:""|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="total">
+      Total: ₹<span id="total-price">{{ total_price }}</span>
+    </div>
+
+    <div class="actions">
+      <a href="/">Continue Shopping</a>
+      <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p style="text-align:center;">Your cart is empty.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    function updateTotals() {
+      let total = 0;
+      document.querySelectorAll("tbody tr").forEach(row => {
+        const price = parseFloat(row.dataset.price);
+        const qty = parseInt(row.querySelector(".quantity").innerText);
+        const rowTotal = price * qty;
+        row.querySelector(".row-total").innerText = "₹" + rowTotal.toFixed(2);
+        total += rowTotal;
+      });
+      document.getElementById("total-price").innerText = total.toFixed(2);
+    }
+
+    document.addEventListener("click", e => {
+      if (e.target.classList.contains("increase") || e.target.classList.contains("decrease")) {
+        const row = e.target.closest("tr");
+        const qtyEl = row.querySelector(".quantity");
+        let qty = parseInt(qtyEl.innerText);
+        if (e.target.classList.contains("increase")) qty++;
+        if (e.target.classList.contains("decrease") && qty > 1) qty--;
+        qtyEl.innerText = qty;
+
+        // Live update total
+        updateTotals();
+
+        // Persist to backend
+        const action = e.target.classList.contains("increase") ? "increase" : "decrease";
+        const itemId = row.dataset.id;
+        fetch(`/cart/${action}/${itemId}/`).then(r => console.log(`Updated ${action} ${itemId}`));
+      }
+    });
+
+    updateTotals();
+  </script>
+</body>
+</html>

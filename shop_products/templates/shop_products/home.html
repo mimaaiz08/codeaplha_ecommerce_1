@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Shop | Home</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h2 class="logo">E-Shop</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/cart/">Cart</a></li>
+            <li><a href="/users/logout/">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Welcome -->
+    <div class="welcome">
+        <h3>Welcome, {{ request.user.username }} 👋</h3>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-container">
+        {% if products %}
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₹{{ product.price }}</p>
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn">Add to Cart</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+  <div class="container">
+    © 2025 E-Shop | All rights reserved
+  </div>
+</footer>
+
+</body>
+</html>
