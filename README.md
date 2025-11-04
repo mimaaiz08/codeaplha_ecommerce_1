@@ -46,3 +46,83 @@ A simple and responsive **E-Commerce web application** built using **Django**, *
 ---
 
 ## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd codeaplha_ecommerce
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run migrations**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+5. **Create a superuser**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+6. **Start the development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+7. **Access the application**
+   - Website: http://127.0.0.1:8000/
+
+📂 Project Structure
+
+ecommerce/
+├── customer_users/         # User authentication and home page
+├── shop_products/          # Product models and logic
+├── shop_cart/              # Cart and checkout functionality
+├── static/                 # Static assets (CSS, JS, images)
+├── templates/              # HTML templates
+├── db.sqlite3              # Database file
+├── manage.py
+└── requirements.txt
+
+🧠 How It Works
+
+1.User registers/logs in to access the platform.
+
+2.Products are displayed on the homepage from the database.
+
+3.Users can add items to their cart, adjust quantities, or remove them.
+
+4.The cart total updates dynamically.
+
+5.On checkout, users fill in details and confirm the order.
+
+6.The thank-you page confirms successful order placement.
+
+🧰 Admin Panel
+
+The Django Admin Dashboard provides powerful management tools:
+
+Add and manage Products
+
+Manage Users and Orders
+
+Edit Product details and Prices
+
+Access via:
+👉 http://127.0.0.1:8000/admin/
+
+👨‍💻 Author
+
+Muhammed Ismail Maaiz
+Built using Django, HTML, CSS, and JavaScript.
